@@ -20,7 +20,8 @@ from django.urls import re_path as url
 from django.contrib import admin
 from django.urls import path,include
 from online_retailer import views as cust
-
+from online_retailer import views
+from online_retailer.views import productApiView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,4 +30,5 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     #path('', include('home.urls')),
     path('', include('online_retailer.urls')),
+    
 ]

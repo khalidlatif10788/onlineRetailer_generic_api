@@ -41,11 +41,14 @@ class product(models.Model):
 class customer(models.Model):
 
     customer= models.ForeignKey(User, on_delete=models.CASCADE)
+    name= models.CharField(max_length=25,default="admin")
     phone= models.CharField(max_length=25)
-    billing_address= models.TextField(max_length=400)
-    shipping_address= models.TextField(max_length=400)
-    country= CountryField(blank=True)
-
+    billing_address= models.TextField(max_length=400,null=True)
+    shipping_address= models.TextField(max_length=400,null=True)
+    country= CountryField(blank=True,null=True)
+    def __str__(self):
+        return self.name
+    
 class cart(models.Model):
     customer= models.ForeignKey(customer, on_delete=models.CASCADE)
     prd= models.ForeignKey(product, on_delete=models.CASCADE)
