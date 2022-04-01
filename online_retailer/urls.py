@@ -10,14 +10,12 @@ urlpatterns = [
      path('<pk>/update', productUpdateView.as_view(),name="Product_update"),
     path('<pk>/delete/', productDeleteView.as_view(),name="Product_delete"),
     # api product retrive url
-    path('productReterive/',views.productApiView.as_view(), name="product" ),
-    path('productReterive/<int:pk>',views.productApiView.as_view()),
-    
-    # order url
-    path('orderReterive/',views.orderApiView.as_view(), name="order" ),
-    path('orderReterive/<int:pk>',views.orderApiView.as_view()),
-    #customr url
-    path('customerReterive/',views.customerApiView.as_view(), name="customer" ),
-    path('customerReterive/<int:pk>',views.customerApiView.as_view()),
+    path('productList/',views.prodcutList.as_view(), name="productList" ),
+    path('productReteriveSingle/<int:pk>',views.productRetrieve.as_view(), name="productSingle"),
+    # api product update
+     path('productUpdate/<int:pk>',views.productUpdateView.as_view(), name="productUpdate"),
+     #
+    path('productDelete/<int:pk>',views.productDestroy.as_view(), name="productDelete"),
+    #
   
 ]+ static(settings.MEDIA_URL,document_root= settings.MEDIA_ROOT)

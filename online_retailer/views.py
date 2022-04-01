@@ -5,10 +5,7 @@ from django.views.generic.edit import UpdateView,DeleteView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import product,order,customer
-from .Serializers import productSerializer,orderSerializer,customerSerializer
-from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from rest_framework.views import APIView
+from .Serializers import productSerializer
 
 @method_decorator(login_required, name="dispatch")
 class productList(ListView):
@@ -36,120 +33,42 @@ class productDeleteView(DeleteView):
 
 # Api code
 
-class productApiView(APIView):
-    def get(self, request,pk=None,format= None):
-        if request.method == 'GET':
-         id = pk
-         if id is not None:
-          stu = product.objects.get(id=id)
-          serilizer = productSerializer(stu)
-          return Response(serilizer.data)
-         else:
-          stu = product.objects.all()
-          serilizer = productSerializer(stu, many=True)
-          return Response(serilizer.data)
 
-    def post(self, request, format=None):
-        serilizer= productSerializer(data=request.data)
-        if serilizer.is_valid():
-         serilizer.save()
-         return Response({"msg":"data has added sucessfully"})
-        else:
-         return Response(serilizer.errors)
-    
-    def put(self, request,pk= None, format=None):
-        id = pk
-        stu= product.objects.get(id=id)
-        serilizer= productSerializer(stu, data=request.data, partial=True)
-        if serilizer.is_valid():
-         serilizer.save()
-         return Response({"msg":"data has updated sucessfully"})
-        else:
-         return Response(serilizer.errors)
- 
- 
-    def delete(self, request,pk= None, format=None):
-        id = pk
-        stu= product.objects.get(pk=id)
-        stu.delete()
-        return Response({"msg":"data deleted"}) 
-    
-# order class
+from rest_framework.generics import GenericAPIView
+from rest_framework.mixins import ListModelMixin, CreateModelMixin,RetrieveModelMixin,UpdateModelMixin,DestroyModelMixin
 
-class orderApiView(APIView):
-    def get(self, request,pk=None,format= None):
-        if request.method == 'GET':
-         id = pk
-         if id is not None:
-          stu = order.objects.get(id=id)
-          serilizer = orderSerializer(stu)
-          return Response(serilizer.data)
-         else:
-          stu = order.objects.all()
-          serilizer = orderSerializer(stu, many=True)
-          return Response(serilizer.data)
 
-    def post(self, request, format=None):
-        serilizer= orderSerializer(data=request.data)
-        if serilizer.is_valid():
-         serilizer.save()
-         return Response({"msg":"data has added sucessfully"})
-        else:
-         return Response(serilizer.errors)
-    
-    def put(self, request,pk= None, format=None):
-        id = pk
-        stu= order.objects.get(id=id)
-        serilizer= orderSerializer(stu, data=request.data, partial=True)
-        if serilizer.is_valid():
-         serilizer.save()
-         return Response({"msg":"data has updated sucessfully"})
-        else:
-         return Response(serilizer.errors)
- 
- 
-    def delete(self, request,pk= None, format=None):
-        id = pk
-        stu= order.objects.get(pk=id)
-        stu.delete()
-        return Response({"msg":"data deleted"}) 
-    
-    #Customer class
-    
-class customerApiView(APIView):
-    def get(self, request,pk=None,format= None):
-        if request.method == 'GET':
-         id = pk
-         if id is not None:
-          stu = customer.objects.get(id=id)
-          serilizer = customerSerializer(stu)
-          return Response(serilizer.data)
-         else:
-          stu = customer.objects.all()
-          serilizer = customerSerializer(stu, many=True)
-          return Response(serilizer.data)
+class prodcutList(GenericAPIView,ListModelMixin):
+    queryset = product.objects.all()
+    serializer_class = productSerializer
 
-    def post(self, request, format=None):
-        serilizer= customerSerializer(data=request.data)
-        if serilizer.is_valid():
-         serilizer.save()
-         return Response({"msg":"data has added sucessfully"})
-        else:
-         return Response(serilizer.errors)
-    
-    def put(self, request,pk= None, format=None):
-        id = pk
-        stu= customer.objects.get(id=id)
-        serilizer= customerSerializer(stu, data=request.data, partial=True)
-        if serilizer.is_valid():
-         serilizer.save()
-         return Response({"msg":"data has updated sucessfully"})
-        else:
-         return Response(serilizer.errors)
- 
- 
-    def delete(self, request,pk= None, format=None):
-        id = pk
-        stu= customer.objects.get(pk=id)
-        stu.delete()
-        return Response({"msg":"data deleted"}) 
+    def get(self,request,*args,**kwargs):
+        return self.list(request,*args,**kwargs)
+
+class prodcutCreate(GenericAPIView,CreateModelMixin):
+    queryset = product.objects.all()
+    serializer_class = productSerializer
+
+    def post(self,request,*args,**kwargs):
+        return self.create(request,*args,**kwargs)
+
+class productRetrieve(GenericAPIView,RetrieveModelMixin):
+    queryset = product.objects.all()
+    serializer_class = productSerializer
+
+    def get(self,request,*args,**kwargs):
+        return self.retrieve(request,*args,**kwargs)
+
+
+class productUpdate(GenericAPIView,UpdateModelMixin ):
+    queryset = product.objects.all()
+    serializer_class = productSerializer
+
+    def put(self,request,*args,**kwargs):
+        return self.update(request,*args,**kwargs)
+class productDestroy(GenericAPIView,DestroyModelMixin ):
+    queryset = product.objects.all()
+    serializer_class = productSerializer
+
+    def delete(self,request,*args,**kwargs):
+        return self.destroy(request,*args,**kwargs)

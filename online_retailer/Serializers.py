@@ -21,7 +21,7 @@ class productSerializer(serializers.ModelSerializer):
      return instance
     class Meta:
         model= product
-        fields=['P_brand','pcate','pname','pdescription','psalep','pdiscountp','psize',
+        fields=['id','P_brand','pcate','pname','pdescription','psalep','pdiscountp','psize',
                 'product_stock','product_creation_date','photo']
         # fields= '__all__'
        
